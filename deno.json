@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "transcriber": "deno run -A transcriber.ts"
+  },
+  "imports": {
+    "@std/collections": "jsr:@std/collections@^1.0.9",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "assemblyai": "npm:assemblyai@^4.8.0",
+    "jsome": "npm:jsome@^2.5.0",
+    "s3Client": "npm:@aws-sdk/client-s3"
+  }
+}
