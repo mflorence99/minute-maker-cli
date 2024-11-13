@@ -1,0 +1,120 @@
+html {
+  background-color: #313638;
+  font-family: "Roboto";
+  font-size: 16px;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+main {
+  background-color: #faf9f6;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: calc(100% - 7rem);
+  margin: 2rem auto;
+  max-width: 50rem;
+  padding: 2rem;
+}
+
+#theDisclaimer {
+  border-collapse: separate;
+  border-spacing: 1px;
+  width: 100%;
+
+  td {
+    font-size: smaller;
+    line-height: 1.25;
+    padding: 0.5rem;
+  }
+
+  tr {
+    background-color: #f0f0f0;
+    vertical-align: center;
+  }
+}
+
+#theHeader {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+
+  .header {
+    flex-grow: 2;
+    text-align: center;
+  }
+
+  .seal {
+    height: clamp(5rem, 12.5vw, 7rem);
+    width: clamp(5rem, 12.5vw, 7rem);
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .title {
+    font-family: "Germania One";
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    font-weight: bold;
+  }
+}
+
+#theTranscript {
+  border: 1px solid black;
+  flex-grow: 2;
+}
+
+#theWaveform {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .media {
+    height: 2rem;
+    width: 100%;
+  }
+
+  .wavesurfer {
+    background-color: transparent;
+  }
+}
+
+@media print {
+  main {
+    height: 100%;
+    margin: 0;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  #theWaveform {
+    display: none;
+  }
+}
+
+@media (width < 480px) {
+  .seal {
+    display: none;
+  }
+}
+
+@media (width < 800px) {
+  main {
+    height: calc(100% - 4rem);
+    margin: 0;
+    max-width: 100%;
+  }
+
+  #theDisclaimer {
+    display: none;
+  }
+}

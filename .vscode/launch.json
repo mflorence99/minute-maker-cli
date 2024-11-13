@@ -19,6 +19,22 @@
         "--allow-all"
       ],
       "attachSimplePort": 9229
+    },
+    {
+      "request": "launch",
+      "name": "Debug formatter",
+      "type": "node",
+      "program": "${workspaceFolder}/formatter.ts",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "runtimeExecutable": "/home/markf/.deno/bin/deno",
+      "runtimeArgs": [
+        "run",
+        "--unstable",
+        "--inspect-wait",
+        "--allow-all"
+      ],
+      "attachSimplePort": 9229
     }
   ]
 }
