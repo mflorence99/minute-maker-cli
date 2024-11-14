@@ -5,7 +5,14 @@ import { Transcription } from "./types.ts";
 
 import { bucket } from "./types.ts";
 import { omit } from "@std/collections";
-import { parse } from "@std/path/parse";
+import { parse as parsePath } from "@std/path/parse";
+import { parseArgs } from "@std/cli/parse-args";
+
+const flags = parseArgs(Deno.args, {
+	string: ["num-speakers"],
+	default: { "num-speakers": 4 },
+	negatable: ["color"],
+});
 
 const sourceDflt = `September+3+PB+Meeting+Clip.mp3`;
 
@@ -16,7 +23,7 @@ const sourceFile = prompt(
 
 const sourceURL = `https://${bucket}.s3.us-east-1.amazonaws.com/${sourceFile}`;
 
-const targetFile = `${parse(sourceFile).name}.json`;
+const targetFile = `${parsePath(sourceFile).name}.json`;
 
 const aiClient = new AssemblyAI({
 	apiKey: Deno.env.get("ASSEMBLY_AI_KEY") ?? "unknown",
@@ -33,6 +40,7 @@ const timerID = setInterval(() => {
 const transcript = await aiClient.transcripts.transcribe({
 	audio: sourceURL,
 	speaker_labels: true,
+	speakers_expected: Number(flags["num-speakers"]),
 });
 clearInterval(timerID);
 Deno.stdout.write(encoder.encode("\n"));
@@ -87,16 +95,16 @@ const speakers = utterances.reduce(
 );
 
 const transcription: Transcription = {
-	absent: [],
+	absent: ["Fred Douglas"],
 	audioURL: sourceURL,
-	date: "",
-	department: "",
+	date: "2024-11-05 18:30:00-05:00",
+	department: "Planning Board",
 	organization: "Town of Washington",
-	present: [],
+	present: ["Mark Florence", "Peter Martin", "Don Revane"],
 	speakers,
-	subject: "",
+	subject: "Public Hearing",
 	utterances,
-	visitors: [],
+	visitors: ["Nick Cashorali"],
 };
 
 await s3Client.send(

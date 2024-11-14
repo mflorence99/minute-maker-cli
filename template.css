@@ -65,14 +65,10 @@ button:hover {
   border-spacing: 1px;
   font-size: 1rem;
   width: 100%;
+}
 
-  td {
-    padding: 0.5rem;
-  }
-
-  tr {
-    vertical-align: middle;
-  }
+#theAttendees {
+  display: none;
 }
 
 #theDisclaimer {
@@ -169,6 +165,10 @@ button:hover {
     height: calc(100% - 4rem);
     margin: 0;
     max-width: 100%;
+  }
+
+  #theAttendees {
+    display: block;
   }
 
   #theDisclaimer {

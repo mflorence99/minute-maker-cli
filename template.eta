@@ -63,16 +63,12 @@
         </td>
         <td style="background: transparent">
           <article class="buttons">
-            <button popovertarget="attendees">Attendees</button>
-            <button onClick="print()">Print</button>
+            <button popovertarget="theAttendeesPopover">Attendees</button>
+            <button onClick=" print()">Print</button>
           </article>
         </td>
       </tr>
     </table>
-
-    <article id="attendees" popover>
-      <%~ include("./attendees.eta", it) %>
-    </article>
 
     <section id="theWaveform">
       <article class="wavesurfer">
@@ -80,6 +76,14 @@
       <audio class="media" controls>
       </audio>
     </section>
+
+    <article id="theAttendeesPopover" popover>
+      <%~ include("./attendees.eta", it) %>
+    </article>
+
+    <article id="theAttendees">
+      <%~ include("./attendees.eta", it) %>
+    </article>
 
     <section id="theTranscript">
     </section>
