@@ -42,6 +42,50 @@ if (transcript.status === "error") {
 	Deno.exit(1);
 } else console.log("👉 Transcription completed");
 
+const utterances = (transcript?.utterances ?? []).map((u) =>
+	omit(u, ["words"])
+);
+
+const dummySpeakers = [
+	"Alpha",
+	"Bravo",
+	"Charlie",
+	"Delta",
+	"Echo",
+	"Foxtrot",
+	"Golf",
+	"Hotel",
+	"India",
+	"Juliet",
+	"Kilo",
+	"Lima",
+	"Mike",
+	"November",
+	"Oscar",
+	"Papa",
+	"Quebec",
+	"Romeo",
+	"Sierra",
+	"Tango",
+	"Uniform",
+	"Victor",
+	"Whiskey",
+	"Xray",
+	"Tankee",
+	"Zulu",
+].reduce((acc, speaker) => {
+	acc[speaker.substring(0, 1)] = speaker;
+	return acc;
+}, {} as Record<string, string>);
+
+const speakers = utterances.reduce(
+	(acc, utterance) => {
+		acc[utterance.speaker] = dummySpeakers[utterance.speaker];
+		return acc;
+	},
+	{} as Record<string, string>,
+);
+
 const transcription: Transcription = {
 	absent: [],
 	audioURL: sourceURL,
@@ -49,9 +93,9 @@ const transcription: Transcription = {
 	department: "",
 	organization: "Town of Washington",
 	present: [],
-	speakers: {},
+	speakers,
 	subject: "",
-	utterances: (transcript?.utterances ?? []).map((u) => omit(u, ["words"])),
+	utterances,
 	visitors: [],
 };
 

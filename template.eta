@@ -19,15 +19,11 @@
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
 
 <style>
-  <%~include("./template.css") %>
+  <%~include("@css") %>
 </style>
-
-<script>
-  <%~ include("./template.js", it) %>
-</script>
 </head>
 
-<body onLoad="initialize()">
+<body>
 
   <main>
 
@@ -79,6 +75,10 @@
     </section>
 
   </main>
+
+  <script>
+    <%~ include("@javascript", it) %>
+  </script>
 
 </body>
 

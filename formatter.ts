@@ -20,7 +20,17 @@ const targetFile = `${parse(sourceFile).name}.html`;
 
 const s3Client = new S3Client({});
 
-const eta = new Eta({ views: "./" });
+const eta = new Eta({ debug: true, views: Deno.cwd() });
+const decoder = new TextDecoder("utf-8");
+
+const css = await Deno.readFile(`${Deno.cwd()}/template.css`);
+eta.loadTemplate("@css", decoder.decode(css));
+
+const javascript = await Deno.readFile(`${Deno.cwd()}/template.ts`);
+eta.loadTemplate(
+  "@javascript",
+  decoder.decode(javascript).replaceAll(/^import.*;/g, ""),
+);
 
 const response = await s3Client.send(
   new GetObjectCommand({
