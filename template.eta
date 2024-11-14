@@ -50,19 +50,29 @@
         </td>
         <td style="width: 100%">
           This transcript was produced by our
-          <a href="https://github.com/mflorence99/minute-maker-cli">Minute Maker CLI</a>
-          <a href="https://opensource.com/resources/what-open-source">open source software</a>, leveraging
-          <a href="https://www.assemblyai.com/">
+          <a href="https://github.com/mflorence99/minute-maker-cli" target="_blank">Minute Maker CLI</a>
+          <a href="https://opensource.com/resources/what-open-source" target="_blank">open source software</a>, leveraging
+          <a href="https://www.assemblyai.com/" target="_blank">
             AssemblyAI
           </a>
           to perform the transcription, and the
-          <a href="https://platform.openai.com/docs/models">
+          <a href="https://platform.openai.com/docs/models" target="_blank">
             OpenAI GPT-4o
           </a>
-          model to automatically generate a summaries from the transcript.
+          model to automatically generate a summaries from the transcript. XXX
+        </td>
+        <td style="background: transparent">
+          <article class="buttons">
+            <button popovertarget="attendees">Attendees</button>
+            <button onClick="print()">Print</button>
+          </article>
         </td>
       </tr>
     </table>
+
+    <article id="attendees" popover>
+      <%~ include("./attendees.eta", it) %>
+    </article>
 
     <section id="theWaveform">
       <article class="wavesurfer">

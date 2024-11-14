@@ -1,0 +1,27 @@
+<table class="attendees">
+
+  <% if (it.present.length > 0) { %>
+  <tr>
+    <td style="width: 1rem"><b>Present</b></td>
+    <td>
+      <%= it.present.join(", ") %></td>
+  </tr>
+  <% } %>
+
+  <% if (it.absent.length > 0) { %>
+  <tr>
+    <td style="width: 1rem"><b>Absent</b></td>
+    <td>
+      <%= it.absent.join(", ") %></td>
+  </tr>
+  <% } %>
+
+  <% if (it.visitors.length > 0) { %>
+  <tr>
+    <td style="width: 1rem"><b>Visitors</b></td>
+    <td>
+      <%= it.visitors.join(", ") %></td>
+  </tr>
+  <% } %>
+
+</table>
