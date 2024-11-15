@@ -63,8 +63,7 @@
         </td>
         <td style="background: transparent">
           <article class="buttons">
-            <button popovertarget="theAttendeesPopover">Attendees</button>
-            <button onClick=" print()">Print</button>
+            <button onClick="print()">Print</button>
           </article>
         </td>
       </tr>
@@ -77,15 +76,22 @@
       </audio>
     </section>
 
-    <article id="theAttendeesPopover" popover>
-      <%~ include("./attendees.eta", it) %>
-    </article>
+    <nav id="theTabs">
+      <input type="radio" name="tab" id="tab1" onChange="tab('content1')">
+      <label for="tab1">Tab 1</label>
 
-    <article id="theAttendees">
-      <%~ include("./attendees.eta", it) %>
-    </article>
+      <input type="radio" name="tab" id="tab2" onChange="tab('content2')">
+      <label for="tab2">Tab 2</label>
+    </nav>
 
     <section id="theTranscript">
+      <article class="tab-content" id="content1">
+        Content for Tab 1
+      </article>
+
+      <article class="tab-content" id="content2">
+        Content for Tab 2
+      </article>
     </section>
 
   </main>

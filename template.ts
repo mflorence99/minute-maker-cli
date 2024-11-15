@@ -14,7 +14,7 @@ const theWaveSurfer = WaveSurfer.create({
   cursorWidth: 2,
   dragToSeek: false,
   fillParent: true,
-  height: 80,
+  height: 48,
   hideScrollbar: false,
   interact: true,
   media: document.querySelector("#theWaveform .media"),
@@ -25,4 +25,11 @@ const theWaveSurfer = WaveSurfer.create({
   waveColor: "#002a86",
 });
 
-console.log(theWaveSurfer);
+function tab(id) {
+  const children = document.querySelectorAll("#theTranscript .tab-content");
+  children.forEach((child) => {
+    child.style.display = child.id === id ? "block" : "none";
+  });
+}
+
+document.getElementById("tab1").click();
