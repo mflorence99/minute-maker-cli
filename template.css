@@ -13,7 +13,7 @@ button {
   background-color: rgb(33, 150, 243);
   border-radius: 0.25rem;
   border-width: 0px;
-  color: rgb(255, 255, 255);
+  color: white;
   cursor: pointer;
   height: 2rem;
   padding: 0px 1rem;
@@ -38,6 +38,7 @@ html {
 
 main {
   background-color: #faf9f6;
+  color: black;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -98,29 +99,51 @@ main {
 }
 
 #theTabs {
-  input[type="radio"] {
-    display: none;
-  }
+  display: flex;
+  gap: 1rem;
+  list-style-type: none;
 
-  label {
-    background-color: rgba(33, 150, 243, 0.5);
-    color: rgb(255, 255, 255);
+  .tab {
+    border: 1px solid transparent;
+    color: #808080;
     cursor: pointer;
-    display: inline-block;
-    padding: 0.5rem 0.5rem;
+    transition: all 0.25s linear;
   }
 
-  input[type="radio"]:checked + label {
-    background-color: rgb(33, 150, 243);
-  }
-
-  input[type="radio"]:checked + label + .tab-content {
-    display: block;
+  .tab.active {
+    border-bottom: 1px solid black;
+    color: black;
   }
 }
 
 #theTranscript {
   flex-grow: 2;
+
+  .attendees {
+    border-collapse: separate;
+    border-spacing: 1px;
+    width: 100%;
+
+    td:first-child {
+      font-weight: bold;
+      white-space: nowrap;
+
+      &::first-letter {
+        text-transform: capitalize;
+      }
+    }
+
+    td:not(:first-child) {
+      width: 100%;
+    }
+  }
+
+  .summary, .transcript {
+    .title {
+      font-size: larger;
+      font-weight: bold;
+    }
+  }
 
   .tab-content {
     display: none;

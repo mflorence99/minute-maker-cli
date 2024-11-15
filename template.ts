@@ -25,11 +25,17 @@ const theWaveSurfer = WaveSurfer.create({
   waveColor: "#002a86",
 });
 
-function tab(id) {
-  const children = document.querySelectorAll("#theTranscript .tab-content");
+function tab(ix) {
+  let children = document.querySelectorAll("#theTabs .tab");
   children.forEach((child) => {
-    child.style.display = child.id === id ? "block" : "none";
+    if (child.id === `tab${ix}`) {
+      child.classList.add("active");
+    } else child.classList.remove("active");
+  });
+  children = document.querySelectorAll("#theTranscript .tab-content");
+  children.forEach((child) => {
+    child.style.display = child.id === `content${ix}` ? "block" : "none";
   });
 }
 
-document.getElementById("tab1").click();
+tab(3);

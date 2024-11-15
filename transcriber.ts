@@ -97,6 +97,11 @@ const speakers = utterances.reduce(
 const transcription: Transcription = {
 	absent: ["Fred Douglas"],
 	audioURL: sourceURL,
+	chapters: [{
+		end: utterances.at(-1).end,
+		start: utterances.at(0).start,
+		title: "Public Hearing",
+	}],
 	date: "2024-11-05 18:30:00-05:00",
 	department: "Planning Board",
 	organization: "Town of Washington",

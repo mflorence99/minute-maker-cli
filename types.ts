@@ -5,6 +5,7 @@ export const bucket = "munimap-transcriptions";
 export type Transcription = {
   absent: string[];
   audioURL: string;
+  chapters: TranscriptionChapter[];
   date: string;
   department: string;
   organization: string;
@@ -13,4 +14,12 @@ export type Transcription = {
   subject: string;
   utterances: Omit<TranscriptUtterance, "words">[];
   visitors: string[];
+};
+
+export type TranscriptionChapter = {
+  end: number;
+  hash?: string;
+  start: number;
+  summary?: string;
+  title: string;
 };

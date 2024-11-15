@@ -59,7 +59,10 @@
           <a href="https://platform.openai.com/docs/models" target="_blank">
             OpenAI GPT-4o
           </a>
-          model to automatically generate a summaries from the transcript. XXX
+          model to automatically generate a summaries from the transcript. Download the audio from
+          <a href="<%= it.audioURL %>" target="_blank">
+            this page.
+          </a>
         </td>
         <td style="background: transparent">
           <article class="buttons">
@@ -77,20 +80,37 @@
     </section>
 
     <nav id="theTabs">
-      <input type="radio" name="tab" id="tab1" onChange="tab('content1')">
-      <label for="tab1">Tab 1</label>
-
-      <input type="radio" name="tab" id="tab2" onChange="tab('content2')">
-      <label for="tab2">Tab 2</label>
+      <li class="tab" id="tab1" onClick="tab(1)">Attendees</li>
+      <li class="tab" id="tab2" onClick="tab(2)">Summary</li>
+      <li class="tab" id="tab3" onClick="tab(3)">Transcript</li>
     </nav>
 
     <section id="theTranscript">
       <article class="tab-content" id="content1">
-        Content for Tab 1
+        <table class="attendees">
+          <% 
+            let tt = ["present", "absent", "visitors"];
+            tt.forEach(function(t) {
+              if (it[t].length > 0) { %>
+          <tr>
+            <td><%= t %></td>
+            <td>
+              <%= it[t].join(", ") %></td>
+          </tr>
+          <% }}) %>
+        </table>
       </article>
 
-      <article class="tab-content" id="content2">
-        Content for Tab 2
+      <article class="tab-content summary" id="content2">
+        <% it.chapters.forEach(function(chapter) { %>
+        <div class="title"><%= chapter.title %></div>
+        <% }) %>
+      </article>
+
+      <article class="tab-content transcript" id="content3">
+        <% it.chapters.forEach(function(chapter) { %>
+        <div class="title"><%= chapter.title %></div>
+        <% }) %>
       </article>
     </section>
 
