@@ -2,9 +2,9 @@ import { AssemblyAI } from "assemblyai";
 import { PutObjectCommand } from "s3Client";
 import { S3Client } from "s3Client";
 import { Transcription } from "./types.ts";
+import { TranscriptionUtterance } from "./types.ts";
 
 import { bucket } from "./types.ts";
-import { omit } from "@std/collections";
 import { parse as parsePath } from "@std/path/parse";
 import { parseArgs } from "@std/cli/parse-args";
 
@@ -17,7 +17,7 @@ const flags = parseArgs(Deno.args, {
 const sourceDflt = `September+3+PB+Meeting+Clip.mp3`;
 
 const sourceFile = prompt(
-	"👉 Enter audio file to transcribe:",
+	"⌨️ Enter audio file to transcribe:",
 	sourceDflt,
 ) as string ?? sourceDflt;
 
@@ -50,8 +50,16 @@ if (transcript.status === "error") {
 	Deno.exit(1);
 } else console.log("👉 Transcription completed");
 
-const utterances = (transcript?.utterances ?? []).map((u) =>
-	omit(u, ["words"])
+const utterances: TranscriptionUtterance[] = (transcript?.utterances ?? []).map(
+	(
+		u: any,
+		index: number,
+	) => {
+		delete u.confidence;
+		delete u.words;
+		u.index = index;
+		return u;
+	},
 );
 
 const dummySpeakers = [
@@ -81,25 +89,25 @@ const dummySpeakers = [
 	"Xray",
 	"Tankee",
 	"Zulu",
-].reduce((acc, speaker) => {
+].reduce((acc: Record<string, string>, speaker) => {
 	acc[speaker.substring(0, 1)] = speaker;
 	return acc;
-}, {} as Record<string, string>);
+}, {});
 
 const speakers = utterances.reduce(
-	(acc, utterance) => {
+	(acc: Record<string, string>, utterance: any) => {
 		acc[utterance.speaker] = dummySpeakers[utterance.speaker];
 		return acc;
 	},
-	{} as Record<string, string>,
+	{},
 );
 
 const transcription: Transcription = {
 	absent: ["Fred Douglas"],
 	audioURL: sourceURL,
 	chapters: [{
-		end: utterances.at(-1).end,
-		start: utterances.at(0).start,
+		end: utterances.at(-1).index,
+		start: utterances.at(0).index,
 		title: "Public Hearing",
 	}],
 	date: "2024-11-05 18:30:00-05:00",
@@ -112,6 +120,7 @@ const transcription: Transcription = {
 	visitors: ["Nick Cashorali"],
 };
 
+console.log(`👉 Saving ${targetFile}`);
 await s3Client.send(
 	new PutObjectCommand({
 		Bucket: bucket,

@@ -6,18 +6,33 @@
     ],
     "strictNullChecks": false
   },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": false,
+    "proseWrap": "preserve"
+  },
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    }
+  },
   "imports": {
     "@aws-sdk/client-s3": "npm:@aws-sdk/client-s3@^3.689.0",
     "@david/dax": "jsr:@david/dax@^0.42.0",
     "@std/cli": "jsr:@std/cli@^1.0.6",
     "@std/collections": "jsr:@std/collections@^1.0.9",
+    "@std/crypto": "jsr:@std/crypto@^1.0.3",
+    "@std/encoding": "jsr:@std/encoding@^1.0.5",
     "@std/path": "jsr:@std/path@^1.0.8",
     "assemblyai": "npm:assemblyai@^4.8.0",
     "dayjs": "npm:dayjs@^1.11.13",
     "eta": "npm:eta@^3.5.0",
     "jsome": "npm:jsome@^2.5.0",
-    "s3Client": "npm:@aws-sdk/client-s3@^3.689.0",
-    "wavesurfer.js": "npm:wavesurfer.js@^7.8.8"
+    "openai": "npm:openai@^4.72.0",
+    "s3Client": "npm:@aws-sdk/client-s3@^3.689.0"
   },
   "tasks": {
     "formatter": "deno run -A formatter.ts",

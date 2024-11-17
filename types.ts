@@ -1,5 +1,3 @@
-import { TranscriptUtterance } from "assemblyai";
-
 export const bucket = "munimap-transcriptions";
 
 export type Transcription = {
@@ -12,7 +10,7 @@ export type Transcription = {
   present: string[];
   speakers: Record<string, string>;
   subject: string;
-  utterances: Omit<TranscriptUtterance, "words">[];
+  utterances: TranscriptionUtterance[];
   visitors: string[];
 };
 
@@ -22,4 +20,12 @@ export type TranscriptionChapter = {
   start: number;
   summary?: string;
   title: string;
+};
+
+export type TranscriptionUtterance = {
+  end: number;
+  index: number;
+  speaker: string;
+  start: number;
+  text: string;
 };

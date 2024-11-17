@@ -15,11 +15,276 @@
 
 <link rel="shortcut icon" href="./minute-maker.png" />
 
-
 <script src="https://unpkg.com/wavesurfer.js@7"></script>
+<script src="https://unpkg.com/wavesurfer.js@7/dist/plugins/regions.min.js"></script>
 
 <style>
-  <%~include("@css") %>
+  ::backdrop {
+    backdrop-filter: blur(2px);
+  }
+
+  body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  button {
+    background-color: rgb(33, 150, 243);
+    border-radius: 0.25rem;
+    border-width: 0px;
+    color: white;
+    cursor: pointer;
+    height: 2rem;
+    padding: 0px 1rem;
+    text-align: center;
+    transition:
+      background 0.1s ease-out 0s,
+      box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+    transition-duration: 0s, 0.15s;
+  }
+
+  button:hover {
+    background-color: rgba(33, 150, 243, 0.5);
+  }
+
+  html {
+    background-color: #313638;
+    height: 100%;
+    width: 100%;
+  }
+
+  main {
+    background-color: #faf9f6;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto";
+    font-size: 14px;
+    gap: 1rem;
+    height: calc(100% - 7rem);
+    margin: 2rem auto;
+    max-width: 44rem;
+    padding: 2rem;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+
+    td {
+      padding: 0.25rem;
+    }
+
+    td:first-child {
+      padding-left: 0;
+    }
+
+  }
+
+
+  #theDisclaimer {
+
+    td {
+      background-color: #f0f0f0;
+      font-size: smaller;
+      line-height: 1.25;
+      padding: 0.5rem;
+    }
+
+    tr {
+      vertical-align: middle;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+
+  #theHeader {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+
+    .header {
+      flex-grow: 2;
+      text-align: center;
+    }
+
+    .seal {
+      height: clamp(5rem, 12.5vw, 7rem);
+      width: clamp(5rem, 12.5vw, 7rem);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .title {
+      font-family: "Germania One";
+      font-size: clamp(1.5rem, 6vw, 3rem);
+      font-weight: bold;
+    }
+  }
+
+  #theTabs {
+    display: flex;
+    gap: 1rem;
+    list-style-type: none;
+
+    .tab {
+      border: 1px solid transparent;
+      color: #808080;
+      cursor: pointer;
+      transition: all 0.25s linear;
+    }
+
+    .tab.active {
+      border-bottom: 1px solid black;
+      color: black;
+    }
+  }
+
+  #theTranscript {
+    flex-grow: 2;
+    overflow-y: auto;
+
+    .attendees {
+
+      tr {
+        vertical-align: top;
+      }
+
+      td:first-child {
+        font-weight: bold;
+        white-space: nowrap;
+
+        &::first-letter {
+          text-transform: capitalize;
+        }
+      }
+
+      td:not(:first-child) {
+        width: 100%;
+      }
+    }
+
+    .summary {
+      margin-bottom: 1rem;
+
+      ul {
+        margin: 0;
+      }
+
+      li {
+        margin-left: -1.25rem;
+        margin-bottom: 0.25rem;
+      }
+    }
+
+    .transcript {
+      margin-bottom: 1rem;
+
+      tr {
+        vertical-align: top;
+      }
+
+      tr.selected {
+        background-color: #f0f0f0;
+      }
+
+      td:first-child {
+        font-weight: bold;
+        white-space: nowrap;
+      }
+    }
+
+    .tab-content {
+      display: none;
+
+      .title {
+        color: #002a86;
+        font-weight: bold;
+        font-size: larger;
+      }
+    }
+  }
+
+  #theWaveform {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .media {
+      height: 1.5rem;
+      width: 100%;
+    }
+
+    .wavesurfer {
+      background-color: transparent;
+
+      ::part(marker) {
+        background-color: black;
+      }
+
+      ::part(region-content) {
+        background-color: rgba(255, 255, 255, 0.75);
+        color: black;
+        font-size: 10px;
+        max-width: 25em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  @media print {
+    main {
+      height: 100%;
+      margin: 0;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    #theTabs,
+    #theWaveform {
+      display: none;
+    }
+
+    #theTranscript {
+      flex-grow: unset;
+      overflow: unset;
+    }
+
+    .tab-content {
+      display: block !important;
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (width < 480px) {
+    .seal {
+      display: none;
+    }
+  }
+
+  @media (width < 800px) {
+    main {
+      height: calc(100% - 4rem);
+      margin: 0;
+      max-width: 100%;
+    }
+
+    #theDisclaimer {
+      display: none;
+    }
+  }
 </style>
 </head>
 
@@ -104,12 +369,28 @@
       <article class="tab-content summary" id="content2">
         <% it.chapters.forEach(function(chapter) { %>
         <div class="title"><%= chapter.title %></div>
+        <%~ chapter.summary %>
         <% }) %>
+        <br>
       </article>
 
       <article class="tab-content transcript" id="content3">
         <% it.chapters.forEach(function(chapter) { %>
         <div class="title"><%= chapter.title %></div>
+        <table class="transcript">
+          <% 
+            for (let ix = chapter.start; ix <= chapter.end; ix++) { 
+              const utterance = it.utterances[ix];
+          %>
+          <tr data-start=<%= utterance.start / 1000 %> data-end=<%= utterance.end / 1000%>>
+            <td><%= it.speakers[utterance.speaker] %></td>
+            <td style="font-family: monospace">
+              <%= it.dayjs(utterance.start).format('mm:ss') %>
+            </td>
+            <td style="width: 100%"><%= utterance.text %></td>
+          </tr>
+          <% } %>
+        </table>
         <% }) %>
       </article>
     </section>
@@ -117,7 +398,85 @@
   </main>
 
   <script>
-    <%~ include("@javascript", it) %>
+    function throttle(cb, wait) {
+      var lastTime = 0;
+      return function(...args) {
+        var now = Date.now();
+        if (now - lastTime >= wait) {
+          cb(...args);
+          lastTime = now;
+        }
+      };
+    }
+    const regions = WaveSurfer.Regions.create();
+
+    const wavesurfer = WaveSurfer.create({
+      autoCenter: true,
+      audioRate: 1,
+      autoplay: false,
+      autoScroll: true,
+      backend: "WebAudio",
+      barGap: 1,
+      barRadius: 2,
+      barWidth: 2,
+      container: "#theWaveform .wavesurfer",
+      cursorColor: "#ddd5e9",
+      cursorWidth: 2,
+      dragToSeek: false,
+      fillParent: true,
+      height: 48,
+      hideScrollbar: false,
+      interact: true,
+      media: document.querySelector("#theWaveform .media"),
+      minPxPerSec: 1,
+      normalize: false,
+      plugins: [regions],
+      progressColor: "#e0e0e0",
+      url: "<%= it.audioURL %>",
+      waveColor: "#002a86",
+    });
+
+    wavesurfer.on("timeupdate", throttle((currentTime) => {
+      const table = document.querySelector("table.transcript");
+      for (let i = 0; i < table.rows.length; i++) {
+        const row = table.rows[i];
+        row.classList.remove("selected");
+        if (currentTime >= Number(row.dataset.start) &&
+          currentTime < Number(row.dataset.end)) {
+          if (!row.classList.contains("selected")) {
+            row.classList.add("selected");
+            row.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest"
+            });
+          }
+        }
+      }
+    }, 1000));
+
+    wavesurfer.on("decode", () => {
+      <% it.chapters.forEach(function(chapter) { %>
+      regions.addRegion({
+        start: <%= it.utterances[chapter.start].start / 1000 %>,
+        content: "<%= chapter.title %>"
+      })
+      <% }) %>
+    });
+
+    function tab(ix) {
+      let children = document.querySelectorAll("#theTabs .tab");
+      children.forEach((child) => {
+        if (child.id === `tab${ix}`) {
+          child.classList.add("active");
+        } else child.classList.remove("active");
+      });
+      children = document.querySelectorAll("#theTranscript .tab-content");
+      children.forEach((child) => {
+        child.style.display = child.id === `content${ix}` ? "block" : "none";
+      });
+    }
+
+    tab(3);
   </script>
 
 </body>
