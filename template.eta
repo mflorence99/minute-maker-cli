@@ -231,7 +231,24 @@
     flex-direction: column;
     gap: 0.5rem;
 
+    .loading {
+      align-items: center;
+      display: flex;
+      color: #002a86;
+      height: 1.5rem;
+      font-size: smaller;
+      font-weight: bold;
+      justify-content: center;
+      width: 100%;
+
+      svg {
+        flex-shrink: 0;
+        height: 5rem;
+      }
+    }
+
     .media {
+      display: none;
       height: 1.5rem;
       width: 100%;
     }
@@ -360,6 +377,20 @@
 
     <section id="theWaveform">
       <article class="wavesurfer">
+      </article>
+      <article class="loading">
+        Loading audio
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='40' cy='100'>
+            <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate>
+          </circle>
+          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='100' cy='100'>
+            <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate>
+          </circle>
+          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='160' cy='100'>
+            <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate>
+          </circle>
+        </svg>
       </article>
       <audio class="media" controls>
       </audio>
@@ -505,19 +536,29 @@
         waveColor: "#002a86",
       });
 
-      // 👇 when it's ready, show the chapters as markers
+      // 👇 when it's decoded, show the chapters as markers
       wavesurfer.on("decode", () => {
         <% it.chapters.forEach(function(chapter) { %>
         wavesurfer.plugins[0].addRegion({
+          drag: false,
+          resize: false,
           start: <%= it.utterances[chapter.start].start / 1000 %>,
           content: "<%= chapter.title %>"
         })
         <% }) %>
       });
 
+      // 👇 when it's ready, hide the loading indicator
+      wavesurfer.on("ready", () => {
+        const loading = document.querySelector("#theWaveform .loading");
+        loading.style.display = "none";
+        const media = document.querySelector("#theWaveform .media");
+        media.style.display = "block";
+      });
+
       // 👇 on throttled time changes in the waveform
 
-      let lastElement;
+      let lastElement = null;
 
       wavesurfer.on("timeupdate", throttle((currentTime) => {
         // 👉 find the corresponding row in the transcript
@@ -547,12 +588,16 @@
       //    they're not going to change, so only do it once
       //    this supports the binary search when the waveform moves
 
-      const rows = Array.from(document.querySelector("table.transcript").rows);
-      const lookup = rows.map((row) => ({
-        start: Number(row.dataset.start),
-        end: Number(row.dataset.end),
-        row: row
-      }));
+      let lookup = [];
+
+      window.onload = () => {
+        const rows = Array.from(document.querySelectorAll("table.transcript tr"));
+        lookup = rows.map((row) => ({
+          start: Number(row.dataset.start),
+          end: Number(row.dataset.end),
+          row: row
+        }));
+      };
 
       // 👉 tab to the transcript initially
       tab(3);

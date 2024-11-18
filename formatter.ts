@@ -16,7 +16,7 @@ import OpenAI from "openai";
 //    this S3 { bucket }
 
 // 👉 default used for testing; keep it as a template for data entry
-const sourceDflt = `September+3+PB+Meeting+Clip.json`;
+const sourceDflt = `November+4+PB+Meeting.json`;
 
 // 👇 solicit the JSON data file
 

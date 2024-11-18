@@ -16,7 +16,6 @@ import { parseArgs } from "@std/cli/parse-args";
 const flags = parseArgs(Deno.args, {
 	string: ["num-speakers"],
 	default: { "num-speakers": 4 },
-	negatable: ["color"],
 });
 
 // 👉 default used for testing; keep it as a template for data entry
