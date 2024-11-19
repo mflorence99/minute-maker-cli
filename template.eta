@@ -114,8 +114,8 @@
     }
 
     .seal {
-      height: clamp(5rem, 12.5vw, 7rem);
-      width: clamp(5rem, 12.5vw, 7rem);
+      height: clamp(5rem, 12.5vmin, 7rem);
+      width: clamp(5rem, 12.5vmin, 7rem);
     }
 
     .subtitle {
@@ -125,7 +125,7 @@
 
     .title {
       font-family: "Germania One";
-      font-size: clamp(1.5rem, 6vw, 3rem);
+      font-size: clamp(1.5rem, 6vmin, 3rem);
       font-weight: bold;
     }
   }
@@ -307,6 +307,20 @@
   }
 
   /* 🟥 on most mobile devices ... */
+
+  @media (height < 600px) {
+
+    #theWaveform {
+      display: none;
+    }
+  }
+
+  @media (height < 800px) {
+
+    #theDisclaimer {
+      display: none;
+    }
+  }
 
   @media (width < 800px) {
     main {
