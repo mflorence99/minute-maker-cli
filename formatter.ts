@@ -121,9 +121,30 @@ for (const chapter of transcription.chapters) {
   }
 }
 
+// 👇 organize consistent colors
+
+const colorMap = {
+  accent: "#002a86",
+  black: "#313638",
+  gray8: "#808080",
+  gray9: "#909090",
+  gray10: "#a0a0a0",
+  gray11: "#b0b0b0",
+  gray12: "#c0c0c0",
+  gray13: "#d0d0d0",
+  gray14: "#e0e0e0",
+  gray15: "#f0f0f0",
+  primary: "rgba(33, 150, 243, 1.0)",
+  white: "#faf9f6",
+};
+
 // 👇 render the HTML from the ETA template
 
-const html = eta.render("./template.eta", { ...transcription, dayjs });
+const html = eta.render("./template.eta", {
+  ...transcription,
+  $dayjs: dayjs,
+  $colorMap: colorMap,
+});
 
 // 👇 we're done!
 //    save the HTML into its S3 bucket

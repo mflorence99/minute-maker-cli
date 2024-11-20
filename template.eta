@@ -3,7 +3,7 @@
 <html lang="en">
 
 <title>
-  <%= it.subject %> - <%= it.dayjs(it.date).format('MMMM D, YYYY') %>
+  <%= it.subject %> - <%= it.$dayjs(it.date).format('MMMM D, YYYY') %>
 </title>
 
 <meta charset="utf-8" />
@@ -29,30 +29,30 @@
   }
 
   button {
-    background-color: rgb(33, 150, 243);
+    background-color: <%=it.$colorMap.primary %>;
     border-radius: 0.25rem;
     border-width: 0px;
-    color: white;
+    color: <%=it.$colorMap.white %>;
     cursor: pointer;
     height: 2rem;
     padding: 0px 1rem;
     text-align: center;
-    transition: background 0.25s linear;
+    transition: background 0.125s linear;
   }
 
   button:hover {
-    background-color: rgba(33, 150, 243, 0.5);
+    background-color: <%=it.$colorMap.primary.replace("1.0", "0.5") %>;
   }
 
   html {
-    background-color: #313638;
+    background-color: <%=it.$colorMap.black %>;
     height: 100%;
     width: 100%;
   }
 
   main {
-    background-color: #faf9f6;
-    color: black;
+    background-color: <%=it.$colorMap.white %>;
+    color: <%=it.$colorMap.black %>;
     display: flex;
     flex-direction: column;
     font-family: "Roboto";
@@ -89,7 +89,7 @@
   #theDisclaimer {
 
     td {
-      background-color: #f0f0f0;
+      background-color: <%=it.$colorMap.gray15 %>;
       font-size: smaller;
       line-height: 1.25;
       padding: 0.5rem;
@@ -144,14 +144,14 @@
 
     .tab {
       border: 1px solid transparent;
-      color: #808080;
+      color: <%=it.$colorMap.gray10 %>;
       cursor: pointer;
       transition: color 0.25s linear;
     }
 
     .tab.active {
-      border-bottom: 1px solid black;
-      color: black;
+      border-bottom: 1px solid <%=it.$colorMap.black %>;
+      color: <%=it.$colorMap.black %>;
     }
   }
 
@@ -204,11 +204,16 @@
       margin-bottom: 1rem;
 
       tr {
+        cursor: pointer;
         vertical-align: top;
       }
 
+      tr:hover {
+        background-color: <%=it.$colorMap.gray15 %>;
+      }
+
       tr.selected {
-        background-color: #e0e0e0;
+        background-color: <%=it.$colorMap.gray13 %>;
       }
 
       td:first-child {
@@ -239,7 +244,7 @@
     .loading {
       align-items: center;
       display: flex;
-      color: #002a86;
+      color: <%=it.$colorMap.black %>;
       height: 1.5rem;
       font-size: smaller;
       font-weight: bold;
@@ -247,8 +252,10 @@
       width: 100%;
 
       svg {
+        fill: <%=it.$colorMap.accent %>;
         flex-shrink: 0;
         height: 5rem;
+        stroke: <%=it.$colorMap.accent %>;
       }
     }
 
@@ -262,12 +269,12 @@
       background-color: transparent;
 
       ::part(marker) {
-        background-color: black;
+        background-color: <%=it.$colorMap.gray8 %>;
       }
 
       ::part(region-content) {
-        background-color: rgba(255, 255, 255, 0.75);
-        color: black;
+        background-color: <%=it.$colorMap.white %>;
+        color: <%=it.$colorMap.gray8 %>;
         font-size: 10px;
         max-width: 25em;
         overflow: hidden;
@@ -351,7 +358,7 @@
         <b class="subtitle">
           <%= it.department %>
           <br>
-          <%= it.subject %> - <%= it.dayjs(it.date).format('MMMM D, YYYY') %>
+          <%= it.subject %> - <%= it.$dayjs(it.date).format('MMMM D, YYYY') %>
         </b>
       </article>
 
@@ -400,13 +407,13 @@
       <article class="loading">
         Loading audio
         <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
-          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='40' cy='100'>
+          <circle stroke-width='3' r='15' cx='40' cy='100'>
             <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.4'></animate>
           </circle>
-          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='100' cy='100'>
+          <circle stroke-width='3' r='15' cx='100' cy='100'>
             <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='-.2'></animate>
           </circle>
-          <circle fill='#002A86' stroke='#002A86' stroke-width='3' r='15' cx='160' cy='100'>
+          <circle stroke-width='3' r='15' cx='160' cy='100'>
             <animate attributeName='opacity' calcMode='spline' dur='2' values='1;0;1;' keySplines='.5 0 .5 1;.5 0 .5 1' repeatCount='indefinite' begin='0'></animate>
           </circle>
         </svg>
@@ -418,9 +425,9 @@
     <% /* 🟥 tabs: Attendees etc */ %>
 
     <nav id="theTabs">
-      <li class="tab" id="tab1" onClick="window.__transcript_tab__(1)">Attendees</li>
-      <li class="tab" id="tab2" onClick="window.__transcript_tab__(2)">Summary</li>
-      <li class="tab" id="tab3" onClick="window.__transcript_tab__(3)">Transcript</li>
+      <li class="tab" id="tab1" onClick="$$tab(1)">Attendees</li>
+      <li class="tab" id="tab2" onClick="$$tab(2)">Summary</li>
+      <li class="tab" id="tab3" onClick="$$tab(3)">Transcript</li>
     </nav>
 
     <% /* 🟥 everything tabbed fits here */ %>
@@ -467,10 +474,10 @@
             for (let ix = chapter.start; ix <= chapter.end; ix++) { 
               const utterance = it.utterances[ix];
           %>
-          <tr data-start=<%= utterance.start / 1000 %> data-end=<%= utterance.end / 1000%>>
+          <tr onclick="$$wavesurfer.setTime(<%= utterance.start / 1000 %>)" data-start=<%= utterance.start / 1000 %> data-end=<%= utterance.end / 1000%>>
             <td><%= it.speakers[utterance.speaker] %></td>
             <td style="font-family: monospace">
-              <%= it.dayjs(utterance.start).format('mm:ss') %>
+              <%= it.$dayjs(utterance.start).format('mm:ss') %>
             </td>
             <td style="width: 100%"><%= utterance.text %></td>
           </tr>
@@ -483,6 +490,8 @@
   </main>
 
   <script>
+    let $$tab, $$wavesurfer;
+
     (function() {
 
       // 👇 off-the-shelf binary search
@@ -498,6 +507,22 @@
           else return array[mid];
         }
         return null;
+      }
+
+      // 👇 either manually, or via waveform position changes
+      let lastSelectedRow = null;
+
+      function selectRow(row) {
+        if (!row.classList.contains("selected")) {
+          row.classList.add("selected");
+          row.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+          // 👉 prepare for next selectrion
+          lastSelectedRow?.classList.remove("selected");
+          lastSelectedRow = row;
+        }
       }
 
       // 👇 when a tab is clicked ...
@@ -539,7 +564,7 @@
         barRadius: 2,
         barWidth: 2,
         container: "#theWaveform .wavesurfer",
-        cursorColor: "#ddd5e9",
+        cursorColor: "<%=it.$colorMap.gray8 %>",
         cursorWidth: 2,
         dragToSeek: false,
         fillParent: true,
@@ -550,9 +575,9 @@
         minPxPerSec: 1,
         normalize: false,
         plugins: [WaveSurfer.Regions.create()],
-        progressColor: "#e0e0e0",
+        progressColor: "<%= it.$colorMap.gray14 %>",
         url: "<%= it.audioURL %>",
-        waveColor: "#002a86",
+        waveColor: "<%= it.$colorMap.accent %>",
       });
 
       // 👇 when it's decoded, show the chapters as markers
@@ -577,30 +602,15 @@
 
       // 👇 on throttled time changes in the waveform
 
-      let lastElement = null;
-
       wavesurfer.on("timeupdate", throttle((currentTime) => {
-        // 👉 find the corresponding row in the transcript
         const element = binarySearch(lookup, currentTime,
           function(element, key) {
             if (key < element.start) return +1;
             if (key >= element.end) return -1;
             return 0;
           });
-        if (element) {
-          row = element.row;
-          if (!row.classList.contains("selected")) {
-            // 👉 if found, and not already selected, select it
-            row.classList.add("selected");
-            row.scrollIntoView({
-              behavior: "smooth",
-              block: "center"
-            });
-            // 👉 prepare for next selectrion
-            lastElement?.row.classList.remove("selected");
-            lastElement = element;
-          }
-        }
+        if (element)
+          selectRow(element.row);
       }, 1000));
 
       // 👇 build a lookup table of all the rows of the transcription
@@ -621,8 +631,9 @@
       // 👉 tab to the transcript initially
       tab(3);
 
-      // 👉 poor man's alias to tab function (used in HTML)
-      window.__transcript_tab__ = tab;
+      // 👉 poor man's "export"
+      $$tab = tab;
+      $$wavesurfer = wavesurfer;
 
     })();
   </script>
