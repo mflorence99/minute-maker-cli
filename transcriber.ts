@@ -6,20 +6,15 @@ import { TranscriptionUtterance } from "./types.ts";
 
 import { bucket } from "./types.ts";
 import { parse as parsePath } from "@std/path/parse";
-import { parseArgs } from "@std/cli/parse-args";
 
 // 🔥 the JSON input and HTML output files are relative to
 //    this S3 { bucket }
 
-// 👇 AssemblyAI works best with an accurate count of speakers
-
-const flags = parseArgs(Deno.args, {
-	string: ["num-speakers"],
-	default: { "num-speakers": 4 },
-});
-
 // 👉 default used for testing; keep it as a template for data entry
 const sourceDflt = `September+3+PB+Meeting+Clip.mp3`;
+
+// 👉 default number of speaker_labels
+const dfltSpeakers = "4";
 
 // 👇 solicit the MP3 audio file
 
@@ -28,6 +23,13 @@ const sourceFile = prompt(
 	sourceDflt,
 ) as string ?? sourceDflt;
 const sourceURL = `https://${bucket}.s3.us-east-1.amazonaws.com/${sourceFile}`;
+
+// 👇 solicit the number of speakers
+
+const numSpeakers = prompt(
+	"⌨️ Enter the number of speakers 1-10:",
+	dfltSpeakers,
+) as string ?? dfltSpeakers;
 
 // 👉 JSON outout file
 const targetFile = `${parsePath(sourceFile).name}.json`;
@@ -52,8 +54,25 @@ const timerID = setInterval(() => {
 
 const transcript = await aiClient.transcripts.transcribe({
 	audio: sourceURL,
+	custom_spelling: [
+		{ from: ["airbnb"], to: "Airbnb" },
+		{ from: ["cip"], to: "CIP" },
+		{ from: ["gene"], to: "Jean" },
+		{ from: ["rpc"], to: "RPC" },
+	],
 	speaker_labels: true,
-	speakers_expected: Number(flags["num-speakers"]),
+	speakers_expected: Math.max(1, Math.min(10, Number(numSpeakers))),
+	word_boost: [
+		"aye",
+		"Board of Adjustment",
+		"Capital Improvement Program",
+		"nay",
+		"Master Plan",
+		"Planning Board",
+		"Select Board",
+		"ZBA",
+		"Zoning Board of Adjustment",
+	],
 });
 clearInterval(timerID);
 Deno.stdout.write(encoder.encode("\n"));

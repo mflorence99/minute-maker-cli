@@ -7,7 +7,7 @@
 </title>
 
 <meta charset="utf-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Slab" rel="stylesheet">
 
@@ -62,6 +62,11 @@
     margin: 2rem auto;
     max-width: 44rem;
     padding: 2rem;
+
+    /* 🔥 https://stackoverflow.com/questions/27074259/html-css-table-font-size-different-in-mobile-device */
+
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
   }
 
   table {
