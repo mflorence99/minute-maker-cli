@@ -35,6 +35,22 @@
         "--allow-all"
       ],
       "attachSimplePort": 9229
+    },
+    {
+      "request": "launch",
+      "name": "Debug tester",
+      "type": "node",
+      "program": "${workspaceFolder}/test.ts",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "runtimeExecutable": "/home/markf/.deno/bin/deno",
+      "runtimeArgs": [
+        "run",
+        "--unstable",
+        "--inspect-wait",
+        "--allow-all"
+      ],
+      "attachSimplePort": 9229
     }
   ]
 }
