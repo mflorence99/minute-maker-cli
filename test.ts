@@ -1,11 +1,11 @@
-import { GetObjectCommand } from "s3Client";
-import { PutObjectCommand } from "s3Client";
-import { S3Client } from "s3Client";
+import { GetObjectCommand } from 's3Client';
+import { PutObjectCommand } from 's3Client';
+import { S3Client } from 's3Client';
 
-import { bucket } from "./types.ts";
-import { parse } from "@std/path/parse";
+import { bucket } from './types.ts';
+import { parse } from '@std/path/parse';
 
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
 // 🔥 the JSON input and HTML output files are relative to
 //    this S3 { bucket }
@@ -16,7 +16,7 @@ const sourceDflt = `November 19 PB Hearing (Raw).txt`;
 // 👇 solicit the JSON data file
 
 const sourceFile = prompt(
-  "⌨️ Enter the raw minutes file to interpret:",
+  '⌨️ Enter the raw minutes file to interpret:',
   sourceDflt,
 ) as string ?? sourceDflt;
 
@@ -48,27 +48,27 @@ Deno.stdout.write(
   encoder.encode(`👉 Summarizing raw minutes.`),
 );
 const timerID = setInterval(() => {
-  Deno.stdout.write(encoder.encode("."));
+  Deno.stdout.write(encoder.encode('.'));
 }, 100);
 
 // 👇 ask OpenAI to produce a summary from the transcription
 
 const aiResponse = await openai.chat.completions.create({
   messages: [{
-    role: "user",
+    role: 'user',
     content:
       `Convert the following text into grammatical English. Break it into short paragraphs. Format the result as HTML.\n\n${str}`,
   }],
-  model: "gpt-4o",
+  model: 'gpt-4o',
 });
 clearInterval(timerID);
-Deno.stdout.write(encoder.encode("\n"));
+Deno.stdout.write(encoder.encode('\n'));
 
 // 🔥 ugh! no idea how to suppress this crap
 
 const summary = aiResponse.choices[0].message.content
-  .replaceAll("```html", "")
-  .replaceAll("```", "");
+  .replaceAll('```html', '')
+  .replaceAll('```', '');
 
 // 👇 we're done!
 //    save the HTML into its S3 bucket
@@ -79,6 +79,6 @@ await s3Client.send(
     Bucket: bucket,
     Key: targetFile,
     Body: summary,
-    ContentType: "text/html",
+    ContentType: 'text/html',
   }),
 );

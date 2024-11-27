@@ -1,4 +1,4 @@
-export const bucket = "munimap-transcriptions";
+export const bucket = 'munimap-transcriptions';
 
 export type Transcription = {
   absent: string[];

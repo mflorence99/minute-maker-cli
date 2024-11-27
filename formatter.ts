@@ -1,16 +1,16 @@
-import { Eta } from "eta";
-import { GetObjectCommand } from "s3Client";
-import { PutObjectCommand } from "s3Client";
-import { S3Client } from "s3Client";
-import { Transcription } from "./types.ts";
+import { Eta } from 'eta';
+import { GetObjectCommand } from 's3Client';
+import { PutObjectCommand } from 's3Client';
+import { S3Client } from 's3Client';
+import { Transcription } from './types.ts';
 
-import { bucket } from "./types.ts";
-import { crypto } from "@std/crypto";
-import { encodeHex } from "jsr:@std/encoding/hex";
-import { parse } from "@std/path/parse";
+import { bucket } from './types.ts';
+import { crypto } from '@std/crypto';
+import { encodeHex } from 'jsr:@std/encoding/hex';
+import { parse } from '@std/path/parse';
 
-import dayjs from "dayjs";
-import OpenAI from "openai";
+import dayjs from 'dayjs';
+import OpenAI from 'openai';
 
 // 🔥 the JSON input and HTML output files are relative to
 //    this S3 { bucket }
@@ -21,7 +21,7 @@ const sourceDflt = `September+3+PB+Meeting+Clip.json`;
 // 👇 solicit the JSON data file
 
 const sourceFile = prompt(
-  "⌨️ Enter transcription JSON to format:",
+  '⌨️ Enter transcription JSON to format:',
   sourceDflt,
 ) as string ?? sourceDflt;
 
@@ -59,7 +59,7 @@ for (const chapter of transcription.chapters) {
   //    has changed siunce we last ran
 
   const jammed = [
-    "The intended audience is a professional reader. Summarize the following discussion into bullets by using the past tense. Format the response as an HTML fragment.\n",
+    'The intended audience is a professional reader. Summarize the following discussion into bullets by using the past tense. Format the response as an HTML fragment.\n',
   ];
   for (let ix = chapter.start; ix <= chapter.end; ix++) {
     jammed.push(
@@ -71,9 +71,9 @@ for (const chapter of transcription.chapters) {
 
   // 👇 compute a hash of the transcription
 
-  const b0 = jammed.join("\n");
+  const b0 = jammed.join('\n');
   const b1 = new TextEncoder().encode(b0);
-  const b2 = await crypto.subtle.digest("SHA-256", b1);
+  const b2 = await crypto.subtle.digest('SHA-256', b1);
   const hash = encodeHex(b2);
 
   // 👇 if the hash has changed, the transcription has changed
@@ -89,23 +89,23 @@ for (const chapter of transcription.chapters) {
       encoder.encode(`👉 Summarizing chapter ${chapter.title}.`),
     );
     const timerID = setInterval(() => {
-      Deno.stdout.write(encoder.encode("."));
+      Deno.stdout.write(encoder.encode('.'));
     }, 100);
 
     // 👇 ask OpenAI to produce a summary from the transcription
 
     const response = await openai.chat.completions.create({
-      messages: [{ role: "user", content: b0 }],
-      model: "gpt-4o",
+      messages: [{ role: 'user', content: b0 }],
+      model: 'gpt-4o',
     });
     clearInterval(timerID);
-    Deno.stdout.write(encoder.encode("\n"));
+    Deno.stdout.write(encoder.encode('\n'));
 
     // 🔥 ugh! no idea how to suppress this crap
 
     chapter.summary = response.choices[0].message.content
-      .replaceAll("```html", "")
-      .replaceAll("```", "");
+      .replaceAll('```html', '')
+      .replaceAll('```', '');
 
     // 👇 save the JSON with the new summary
 
@@ -115,7 +115,7 @@ for (const chapter of transcription.chapters) {
         Bucket: bucket,
         Key: sourceFile,
         Body: JSON.stringify(transcription, null, 2),
-        ContentType: "application/json",
+        ContentType: 'application/json',
       }),
     );
   }
@@ -124,23 +124,23 @@ for (const chapter of transcription.chapters) {
 // 👇 organize consistent colors
 
 const colorMap = {
-  accent: "#002a86",
-  black: "#313638",
-  gray8: "#808080",
-  gray9: "#909090",
-  gray10: "#a0a0a0",
-  gray11: "#b0b0b0",
-  gray12: "#c0c0c0",
-  gray13: "#d0d0d0",
-  gray14: "#e0e0e0",
-  gray15: "#f0f0f0",
-  primary: "rgba(33, 150, 243, 1.0)",
-  white: "#faf9f6",
+  accent: '#002a86',
+  black: '#313638',
+  gray8: '#808080',
+  gray9: '#909090',
+  gray10: '#a0a0a0',
+  gray11: '#b0b0b0',
+  gray12: '#c0c0c0',
+  gray13: '#d0d0d0',
+  gray14: '#e0e0e0',
+  gray15: '#f0f0f0',
+  primary: 'rgba(33, 150, 243, 1.0)',
+  white: '#faf9f6',
 };
 
 // 👇 render the HTML from the ETA template
 
-const html = eta.render("./template.eta", {
+const html = eta.render('./template.eta', {
   ...transcription,
   $dayjs: dayjs,
   $colorMap: colorMap,
@@ -155,6 +155,6 @@ await s3Client.send(
     Bucket: bucket,
     Key: targetFile,
     Body: html,
-    ContentType: "text/html",
+    ContentType: 'text/html',
   }),
 );
