@@ -6,9 +6,8 @@
   "configurations": [
     {
       "request": "launch",
-      "name": "Debug transcriber",
+      "name": "Debug Minute Maker CLI",
       "type": "node",
-      "program": "${workspaceFolder}/transcriber.ts",
       "cwd": "${workspaceFolder}",
       "env": {},
       "runtimeExecutable": "/home/markf/.deno/bin/deno",
@@ -16,39 +15,8 @@
         "run",
         "--unstable",
         "--inspect-wait",
-        "--allow-all"
-      ],
-      "attachSimplePort": 9229
-    },
-    {
-      "request": "launch",
-      "name": "Debug formatter",
-      "type": "node",
-      "program": "${workspaceFolder}/formatter.ts",
-      "cwd": "${workspaceFolder}",
-      "env": {},
-      "runtimeExecutable": "/home/markf/.deno/bin/deno",
-      "runtimeArgs": [
-        "run",
-        "--unstable",
-        "--inspect-wait",
-        "--allow-all"
-      ],
-      "attachSimplePort": 9229
-    },
-    {
-      "request": "launch",
-      "name": "Debug tester",
-      "type": "node",
-      "program": "${workspaceFolder}/test.ts",
-      "cwd": "${workspaceFolder}",
-      "env": {},
-      "runtimeExecutable": "/home/markf/.deno/bin/deno",
-      "runtimeArgs": [
-        "run",
-        "--unstable",
-        "--inspect-wait",
-        "--allow-all"
+        "--allow-all",
+        "${file}"
       ],
       "attachSimplePort": 9229
     }
