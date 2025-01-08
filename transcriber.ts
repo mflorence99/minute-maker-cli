@@ -11,7 +11,7 @@ import { parse as parsePath } from '@std/path/parse';
 //    this S3 { bucket }
 
 // 👉 default used for testing; keep it as a template for data entry
-const sourceDflt = `September+3+PB+Meeting+Clip.mp3`;
+const sourceDflt = `pb+eruption.mp3`;
 
 // 👉 default number of speaker_labels
 const dfltSpeakers = '4';
